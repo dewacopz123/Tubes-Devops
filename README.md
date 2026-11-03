@@ -1,6 +1,6 @@
 # 🏥 eLabora - Sistem Informasi Laboratorium Medis
 
-Proyek monorepo terpadu untuk platform **eLabora**, menggabungkan layanan backend REST API dan antarmuka web (frontend).
+Proyek monorepo terpadu untuk platform **eLabora**, menggabungkan layanan backend REST API, antarmuka web (frontend), dan database MySQL.
 
 ---
 
@@ -22,6 +22,12 @@ Tubes Devops/
 │   ├── composer.json                   # Dependensi PHP/Composer
 │   └── package.json                    # Dependensi frontend (Vite & Tailwind)
 │
+├── database/                           # Skema & Seed Data Database
+│   └── database-elabora.sql            # Dump MySQL (DDL + Sample Data lengkap)
+│
+├── scripts/                            # Skrip Utilitas Proyek
+│   └── import-db.ps1                   # Skrip otomatis import database ke MySQL lokal
+│
 ├── .gitignore                          # Aturan git ignore terpadu untuk monorepo
 └── README.md                           # Dokumentasi utama proyek
 ```
@@ -31,17 +37,32 @@ Tubes Devops/
 ## 🚀 Panduan Memulai Cepat
 
 ### 1. Prasyarat Sistem
+- **MySQL**: v8.0 / MariaDB 10.4+ (mis. via XAMPP atau Laragon)
 - **Node.js**: v18.x atau lebih baru
-- **npm**: v9.x atau lebih baru
-- **PHP**: v8.2 atau lebih baru
-- **Composer**: v2.x
-- **MySQL**: v8.0 atau MariaDB 10.4+
+- **PHP**: v8.2 atau lebih baru & **Composer** v2.x
 
 ---
 
-### 2. Menjalankan Backend API (`backend/`)
+### 2. Setup Database (`database/`)
 
-1. Buka terminal dan masuk ke folder `backend`:
+1. Nyalakan service **MySQL** di XAMPP / Laragon.
+2. Impor file database menggunakan salah satu cara:
+   - **Cara Otomatis (PowerShell)**:
+     ```powershell
+     .\scripts\import-db.ps1
+     ```
+   - **Cara phpMyAdmin / MySQL CLI**:
+     Buka phpMyAdmin (`http://localhost/phpmyadmin`) lalu import file [`database/database-elabora.sql`](file:///C:/Tubes%20Devops/database/database-elabora.sql), atau jalankan perintah:
+     ```bash
+     mysql -u root -p < database/database-elabora.sql
+     ```
+     *(Database `elabora_db` beserta seluruh tabel dan datanya akan dibuat secara otomatis).*
+
+---
+
+### 3. Menjalankan Backend API (`backend/`)
+
+1. Masuk ke direktori `backend`:
    ```bash
    cd backend
    ```
@@ -50,45 +71,42 @@ Tubes Devops/
    npm install
    ```
 3. Konfigurasi file `.env`:
-   ```bash
-   cp .env.example .env
+   File `.env` sudah disediakan secara lokal dengan konfigurasi default:
+   ```env
+   PORT=3000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=
+   DB_NAME=elabora_db
+   DB_SSL=false
    ```
-   *Sesuaikan konfigurasi database MySQL, kredensial JWT, dan port API (default: 3000 atau 5000).*
-4. Jalankan backend dalam mode development:
+4. Jalankan backend:
    ```bash
    npm run dev
    ```
 
 ---
 
-### 3. Menjalankan Web Application (`frontend/`)
+### 4. Menjalankan Web Application (`frontend/`)
 
 1. Buka terminal baru dan masuk ke folder `frontend`:
    ```bash
    cd frontend
    ```
-2. Pasang dependensi PHP dan Node:
+2. Pasang dependensi:
    ```bash
    composer install
    npm install
    ```
-3. Konfigurasi file `.env`:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
+3. File `.env` lokal sudah siap dengan URL backend:
+   ```env
+   EXPRESS_API_URL=http://localhost:3000
    ```
-   *Pastikan variabel `EXPRESS_API_URL` pada `.env` mengarah ke URL service `backend` (misal: `http://localhost:5000`).*
-4. Jalankan compiler asset (Vite) dan server Laravel:
+4. Jalankan Vite compiler dan server Laravel:
    ```bash
-   # Terminal 1: Vite asset compiler
+   # Terminal A: Compiler asset
    npm run dev
 
-   # Terminal 2: Laravel development server
+   # Terminal B: Server Laravel
    php artisan serve
    ```
-
----
-
-## 🛠️ Praktik DevOps
-- **Containerization**: Anda dapat menambahkan `Dockerfile` di dalam folder `backend/` dan `frontend/` serta `docker-compose.yml` di root untuk menjalankan kedua service secara bersamaan.
-- **CI/CD**: Pipeline GitHub Actions dapat mendeteksi perubahan pada masing-masing folder (`backend/**` dan `frontend/**`) secara independen untuk testing dan deployment.
