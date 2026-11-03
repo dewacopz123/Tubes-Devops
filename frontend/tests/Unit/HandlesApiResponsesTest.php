@@ -55,3 +55,4 @@ class HandlesApiResponsesTest extends TestCase
         $this->assertStringContainsString('Sesi Anda telah berakhir', $dummy->testErrorView($response, $api));
     }
 }
+

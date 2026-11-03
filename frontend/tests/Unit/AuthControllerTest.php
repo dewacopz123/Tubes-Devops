@@ -100,3 +100,4 @@ class AuthControllerTest extends TestCase
         $this->assertNull(session('api_token'));
     }
 }
+

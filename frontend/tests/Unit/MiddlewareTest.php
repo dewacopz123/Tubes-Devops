@@ -118,3 +118,4 @@ class MiddlewareTest extends TestCase
         $this->assertEquals('OK', $response->getContent());
     }
 }
+

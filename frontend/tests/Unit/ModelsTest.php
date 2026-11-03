@@ -114,3 +114,4 @@ class ModelsTest extends TestCase
         $this->assertInstanceOf(HasMany::class, $petugas->pemeriksaan());
     }
 }
+
