@@ -1,4 +1,4 @@
-name: eLabora CI/CD & DevSecOps Pipeline
+﻿name: eLabora CI/CD & DevSecOps Pipeline
 
 on:
   push:
@@ -188,14 +188,24 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Run Frontend Automated Tests (PHPUnit)
+      - name: Run Frontend Automated Tests (PHPUnit) with Coverage
         working-directory: ./frontend
         env:
           APP_ENV: testing
           DB_CONNECTION: sqlite
           DB_DATABASE: ':memory:'
         run: |
-          php artisan test
+          mkdir -p coverage
+          php artisan test --coverage-cobertura=coverage/cobertura.xml || php artisan test
+
+      - name: Upload Frontend Coverage Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage-report
+          path: frontend/coverage/
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Upload Frontend Test Results
         if: always()
@@ -227,17 +237,16 @@ jobs:
           path: backend/coverage/
         continue-on-error: true
 
+      - name: Download Frontend Coverage Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage-report
+          path: frontend/coverage/
+        continue-on-error: true
+
       - name: Execute SonarQube / SonarCloud Scanner
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
-        with:
-          args: >
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY || 'elabora-monorepo' }}
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION || 'dewacopz123' }}
-            -Dsonar.sources=backend/src,frontend/app
-            -Dsonar.tests=backend/tests,frontend/tests
-            -Dsonar.exclusions=**/node_modules/**,**/vendor/**,**/storage/**,**/public/**,**/bootstrap/cache/**,**/database/**
-            -Dsonar.javascript.lcov.reportPaths=backend/coverage/lcov.info
         continue-on-error: true
