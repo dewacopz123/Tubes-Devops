@@ -40,3 +40,4 @@ if ($LASTEXITCODE -eq 0) {
 } else {
     Write-Host "Import selesai dengan kode: $LASTEXITCODE. Periksa apakah MySQL service sudah aktif." -ForegroundColor Yellow
 }
+
