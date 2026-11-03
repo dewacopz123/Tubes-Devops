@@ -1,6 +1,6 @@
 # 🏥 eLabora - Sistem Informasi Laboratorium Medis
 
-Proyek monorepo terpadu untuk platform **eLabora**, menggabungkan layanan backend API dan antarmuka web (frontend).
+Proyek monorepo terpadu untuk platform **eLabora**, menggabungkan layanan backend REST API dan antarmuka web (frontend).
 
 ---
 
@@ -8,23 +8,21 @@ Proyek monorepo terpadu untuk platform **eLabora**, menggabungkan layanan backen
 
 ```
 Tubes Devops/
-├── elabora-api/                        # Backend REST API (Node.js & Express.js)
-│   ├── src/                            # Kode sumber API (controllers, models, routes, dll.)
-│   ├── tests/                          # Automated testing
+├── backend/                            # Backend REST API (Node.js & Express.js)
+│   ├── src/                            # Kode sumber API (controllers, models, routes, middleware)
+│   ├── tests/                          # Automated testing (Vitest)
 │   ├── .env.example                    # Template konfigurasi environment backend
 │   └── package.json                    # Dependensi backend
 │
-├── Project-Web---eLabora/              # Frontend / Web Application
-│   └── eLabora-dev-laravel/
-│       └── eLabora_app/                # Aplikasi Laravel (PHP & Vite / Tailwind CSS)
-│           ├── app/                    # Controller, Models, Providers Laravel
-│           ├── resources/views/        # Blade templates / tampilan UI
-│           ├── routes/                 # Routing web & API proxy
-│           ├── .env.example            # Template konfigurasi environment frontend
-│           ├── composer.json           # Dependensi PHP/Composer
-│           └── package.json            # Dependensi asset Vite/Tailwind
+├── frontend/                           # Web Application (Laravel 11, Vite & Tailwind CSS)
+│   ├── app/                            # Controllers, Models, Services Laravel
+│   ├── resources/views/                # Blade templates / tampilan antarmuka (UI)
+│   ├── routes/                         # Routing web Laravel
+│   ├── .env.example                    # Template konfigurasi environment frontend
+│   ├── composer.json                   # Dependensi PHP/Composer
+│   └── package.json                    # Dependensi frontend (Vite & Tailwind)
 │
-├── .gitignore                          # Konfigurasi ignore terpadu untuk Git
+├── .gitignore                          # Aturan git ignore terpadu untuk monorepo
 └── README.md                           # Dokumentasi utama proyek
 ```
 
@@ -41,11 +39,11 @@ Tubes Devops/
 
 ---
 
-### 2. Menjalankan Backend API (`elabora-api`)
+### 2. Menjalankan Backend API (`backend/`)
 
-1. Masuk ke folder API:
+1. Buka terminal dan masuk ke folder `backend`:
    ```bash
-   cd elabora-api
+   cd backend
    ```
 2. Pasang dependensi:
    ```bash
@@ -55,19 +53,19 @@ Tubes Devops/
    ```bash
    cp .env.example .env
    ```
-   *Sesuaikan konfigurasi database MySQL, kredensial JWT, dan port (default: 3000 atau 5000).*
-4. Jalankan server dalam mode development:
+   *Sesuaikan konfigurasi database MySQL, kredensial JWT, dan port API (default: 3000 atau 5000).*
+4. Jalankan backend dalam mode development:
    ```bash
    npm run dev
    ```
 
 ---
 
-### 3. Menjalankan Web Application (`Project-Web---eLabora`)
+### 3. Menjalankan Web Application (`frontend/`)
 
-1. Masuk ke direktori aplikasi Laravel:
+1. Buka terminal baru dan masuk ke folder `frontend`:
    ```bash
-   cd Project-Web---eLabora/eLabora-dev-laravel/eLabora_app
+   cd frontend
    ```
 2. Pasang dependensi PHP dan Node:
    ```bash
@@ -79,10 +77,10 @@ Tubes Devops/
    cp .env.example .env
    php artisan key:generate
    ```
-   *Pastikan URL API di `.env` mengarah ke instance `elabora-api`.*
-4. Jalankan kompilasi asset (Vite) dan server Laravel:
+   *Pastikan variabel `EXPRESS_API_URL` pada `.env` mengarah ke URL service `backend` (misal: `http://localhost:5000`).*
+4. Jalankan compiler asset (Vite) dan server Laravel:
    ```bash
-   # Terminal 1: Asset compiler
+   # Terminal 1: Vite asset compiler
    npm run dev
 
    # Terminal 2: Laravel development server
@@ -91,5 +89,6 @@ Tubes Devops/
 
 ---
 
-## 🛠️ DevOps & Deployment
-- File alur kerja GitHub Actions dapat dikonfigurasi di root `.github/workflows/` untuk pipeline CI/CD otomatis (pengujian unit, linting, build docker, dan deployment otomatis).
+## 🛠️ Praktik DevOps
+- **Containerization**: Anda dapat menambahkan `Dockerfile` di dalam folder `backend/` dan `frontend/` serta `docker-compose.yml` di root untuk menjalankan kedua service secara bersamaan.
+- **CI/CD**: Pipeline GitHub Actions dapat mendeteksi perubahan pada masing-masing folder (`backend/**` dan `frontend/**`) secara independen untuk testing dan deployment.

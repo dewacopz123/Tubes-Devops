@@ -33,7 +33,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Node.js / Express (elabora-api)
+# Node.js / Express (backend)
 uploads/
 src/uploads/
 .kiro/
@@ -44,7 +44,7 @@ coverage/
 .nyc_output/
 build/Release/
 
-# Laravel (Project-Web---eLabora)
+# Laravel (frontend)
 storage/*.key
 storage/logs/*.log
 storage/framework/cache/*
