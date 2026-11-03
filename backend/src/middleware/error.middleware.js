@@ -3,6 +3,7 @@
 export const notFound = (req, res, next) => {
   res.status(404);
   const error = new Error(`Route not found: ${req.method} ${req.originalUrl}`);
+  error.status = 404;
   next(error);
 };
 
@@ -11,13 +12,13 @@ export const errorHandler = (err, req, res, next) => {
   console.error('Error occurred:', {
     message: err.message,
     stack: err.stack,
-    status: err.status,
+    status: err.status || err.statusCode,
     path: req.path,
     method: req.method,
   });
 
-  // Use err.status or err.statusCode if provided, otherwise default to 500
-  const statusCode = err.status || err.statusCode || 500;
+  // Use err.status or err.statusCode if provided, otherwise check res.statusCode, or default to 500
+  const statusCode = err.status || err.statusCode || (res.statusCode >= 400 ? res.statusCode : 500);
 
   // Determine if we're in production (hide stack traces by default)
   const isProduction = process.env.NODE_ENV !== 'development';
@@ -45,6 +46,8 @@ export const errorHandler = (err, req, res, next) => {
       sanitizedMessage = err.message || 'Authentication required';
     } else if (statusCode === 403) {
       sanitizedMessage = err.message || 'Access forbidden';
+    } else if (statusCode === 404) {
+      sanitizedMessage = err.message || 'Resource not found';
     } else if (statusCode === 409) {
       sanitizedMessage = err.message || 'Resource conflict';
     } else if (isDatabaseError) {
