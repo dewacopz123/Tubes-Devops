@@ -41,7 +41,7 @@ export async function patchExam(req, res, next) {
     const allowed = ["dokter_id", "status_validasi", "status_hasil", "catatan", "tgl_pemeriksaan"];
     const clean = {};
     for (const k of allowed) {
-      if (Object.prototype.hasOwnProperty.call(patch, k)) clean[k] = patch[k];
+      if (Object.hasOwn(patch, k)) clean[k] = patch[k];
     }
 
     const updated = await ExamsService.update(id, clean, req.user.akun_id);

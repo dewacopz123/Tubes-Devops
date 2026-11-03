@@ -1,5 +1,5 @@
-import path from "path";
-import crypto from "crypto";
+﻿import path from "node:path";
+import crypto from "node:crypto";
 import { db } from "../../config/db.js";
 import { RegistrationRepository } from "./registration.repository.js";
 import { AuditRepository } from "../audit/audit.repository.js";
@@ -241,15 +241,15 @@ export const RegistrationService = {
 
   async getByPatientId({ patientId, status, page = 1, limit = 20 }) {
     // Validate patientId
-    if (!patientId || isNaN(patientId) || patientId <= 0) {
+    if (!patientId || Number.isNaN(Number(patientId)) || patientId <= 0) {
       const e = new Error("Invalid patient ID");
       e.statusCode = 400;
       throw e;
     }
 
     // Validate limit (max 100)
-    const validLimit = Math.min(Math.max(1, parseInt(limit) || 20), 100);
-    const validPage = Math.max(1, parseInt(page) || 1);
+    const validLimit = Math.min(Math.max(1, Number.parseInt(limit, 10) || 20), 100);
+    const validPage = Math.max(1, Number.parseInt(page, 10) || 1);
     const offset = (validPage - 1) * validLimit;
 
     // Validate status if provided

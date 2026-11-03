@@ -1,4 +1,4 @@
-export const ExamsRepository = {
+﻿export const ExamsRepository = {
   async getNextPemeriksaanId(conn) {
     const [rows] = await conn.query(
       "SELECT MAX(id) AS max_id FROM pemeriksaan FOR UPDATE"
@@ -72,7 +72,7 @@ export const ExamsRepository = {
 
   async create(conn, payload) {
     const nextId = await this.getNextPemeriksaanId(conn);
-    const [result] = await conn.query(
+    await conn.query(
       `INSERT INTO pemeriksaan (id, pendaftaran_id, kategori_id, dokter_id, petugas_lab_id, tgl_pemeriksaan, status_validasi, status_hasil, catatan, created_at, updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
@@ -109,7 +109,7 @@ export const ExamsRepository = {
 
   async insertFile(conn, { pemeriksaan_id, blob_name, container, content_type, size_bytes, sha256, file_type }) {
     const nextId = await this.getNextPemeriksaanFileId(conn);
-    const [result] = await conn.query(
+    await conn.query(
       `INSERT INTO pemeriksaan_file (id, pemeriksaan_id, blob_name, container, content_type, size_bytes, sha256, file_type, uploaded_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
       [nextId, pemeriksaan_id, blob_name, container, content_type, size_bytes, sha256, file_type]
@@ -188,7 +188,7 @@ export const ExamsRepository = {
      */
     if (q) {
       const qStr = String(q).trim();
-      const isNumeric = /^[0-9]+$/.test(qStr);
+      const isNumeric = /^\d+$/.test(qStr);
 
       if (isNumeric) {
         where.push(`(

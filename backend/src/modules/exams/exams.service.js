@@ -1,5 +1,5 @@
-import path from "path";
-import crypto from "crypto";
+import path from "node:path";
+import crypto from "node:crypto";
 import { db } from "../../config/db.js";
 import { ExamsRepository } from "./exams.repository.js";
 import { AuditRepository } from "../audit/audit.repository.js";

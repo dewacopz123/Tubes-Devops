@@ -6,4 +6,4 @@ if (!is_dir('/tmp/views')) {
 }
 
 // Forward request ke index.php publik Laravel
-require __DIR__ . '/../public/index.php';
+require_once __DIR__ . '/../public/index.php';

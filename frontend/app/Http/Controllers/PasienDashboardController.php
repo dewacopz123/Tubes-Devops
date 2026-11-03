@@ -17,16 +17,16 @@ class PasienDashboardController extends Controller
         // Gunakan endpoint khusus pasien: GET /registrations/queue/today
         // Endpoint ini return: { my: {...}, stats: {...}, tanggal: "..." }
         $res = $api->registrationQueueToday();
-        
+
         if ($res->successful()) {
             $json = $res->json();
 
             // Data antrian pasien sendiri
             $current = $json['my'] ?? null;
-            
+
             // Statistik antrian hari ini
             $stats = $json['stats'] ?? null;
-            
+
             // Tanggal
             $tanggal = $json['tanggal'] ?? null;
 

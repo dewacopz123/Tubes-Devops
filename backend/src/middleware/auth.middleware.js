@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
@@ -16,7 +16,7 @@ export function requireAuth(req, res, next) {
       role: payload.role,
     };
     return next();
-  } catch (err) {
+  } catch {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 }

@@ -6,7 +6,7 @@ import {
   SASProtocol,
 } from "@azure/storage-blob";
 import { DefaultAzureCredential } from "@azure/identity";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 const SAS_DEFAULT_MIN = 10;
 const SAS_MIN_MIN = 1;

@@ -20,14 +20,13 @@ console.log("✓ JWT_SECRET validation passed");
 
 const port = process.env.PORT || 5000;
 
-(async () => {
-  try {
-    await blobService.init();
-  } catch (err) {
-    console.warn("⚠ WARNING: Blob_Service init failed/skipped:", err.message);
-    console.warn("Fitur upload file (surat rujukan & hasil lab) dinonaktifkan sementara sampai konfigurasi Azure Blob disetel.");
-  }
-  app.listen(port, "0.0.0.0", () => {
-    console.log(`API running on port ${port}`);
-  });
-})();
+try {
+  await blobService.init();
+} catch (err) {
+  console.warn("⚠ WARNING: Blob_Service init failed/skipped:", err.message);
+  console.warn("Fitur upload file (surat rujukan & hasil lab) dinonaktifkan sementara sampai konfigurasi Azure Blob disetel.");
+}
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`API running on port ${port}`);
+});

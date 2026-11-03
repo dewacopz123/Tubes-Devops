@@ -49,7 +49,7 @@ export const AuthRepository = {
 
   async insertAkun(conn, data) {
     const nextId = await this.getNextAkunId(conn);
-    const [res] = await conn.query(
+    await conn.query(
       `INSERT INTO akun (id, username, email, password_hash, role, created_at, updated_at)
        VALUES (?, ?, ?, ?, 'PASIEN', NOW(), NOW())`,
       [nextId, data.username, data.email, data.password_hash]
@@ -77,7 +77,7 @@ export const AuthRepository = {
 
   async insertAkunDokter(conn, data) {
     const nextId = await this.getNextAkunId(conn);
-    const [res] = await conn.query(
+    await conn.query(
       `INSERT INTO akun (id, username, email, password_hash, role, created_at, updated_at)
        VALUES (?, ?, ?, ?, 'DOKTER', NOW(), NOW())`,
       [nextId, data.username, data.email, data.password_hash]
@@ -87,7 +87,7 @@ export const AuthRepository = {
 
   async insertAkunPetugas(conn, data) {
     const nextId = await this.getNextAkunId(conn);
-    const [res] = await conn.query(
+    await conn.query(
       `INSERT INTO akun (id, username, email, password_hash, role, created_at, updated_at)
        VALUES (?, ?, ?, ?, 'PETUGAS', NOW(), NOW())`,
       [nextId, data.username, data.email, data.password_hash]
