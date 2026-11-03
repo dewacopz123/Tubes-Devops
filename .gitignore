@@ -16,6 +16,8 @@ Thumbs.db
 # File Environment (Kredensial & Konfigurasi Rahasia)
 .env
 .env.*
+*.env
+*.env.*
 !.env.example
 auth.json
 
