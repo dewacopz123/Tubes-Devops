@@ -1,0 +1,68 @@
+# ==========================================
+# Root .gitignore untuk Monorepo eLabora
+# ==========================================
+
+# Sistem Operasi & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# File Environment (Kredensial & Konfigurasi Rahasia)
+.env
+.env.*
+!.env.example
+auth.json
+
+# Dependensi
+node_modules/
+vendor/
+jspm_packages/
+bower_components/
+
+# Log & Debugging
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Node.js / Express (elabora-api)
+uploads/
+src/uploads/
+.kiro/
+.npm/
+.eslintcache
+.stylelintcache
+coverage/
+.nyc_output/
+build/Release/
+
+# Laravel (Project-Web---eLabora)
+storage/*.key
+storage/logs/*.log
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail/
+public/storage
+public/hot
+public/build
+.phpunit.result.cache
+.phpunit.cache
+.phpactor.json
+Homestead.json
+Homestead.yaml
+
+# Build & Cache umum
+dist/
+out/
+.cache/
+.parcel-cache/
+.temp/
