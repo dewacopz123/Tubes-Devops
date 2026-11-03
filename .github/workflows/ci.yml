@@ -155,7 +155,7 @@ jobs:
         with:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_sqlite, sqlite3, curl, zip
-          coverage: xdebug
+          coverage: pcov
           tools: composer:v2
 
       - name: Setup Node.js for Vite Assets
@@ -196,7 +196,7 @@ jobs:
           DB_DATABASE: ':memory:'
         run: |
           mkdir -p coverage
-          php artisan test --coverage-cobertura=coverage/cobertura.xml || php artisan test
+          php artisan test --coverage-clover=coverage/clover.xml || php artisan test
 
       - name: Upload Frontend Coverage Artifact
         if: always()
